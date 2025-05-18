@@ -1,40 +1,38 @@
-import React, { useEffect, useState, useRef } from 'react'
-import SearchBar from '../common/SearchBar'
-const VideoHero = () => {
-  const [isVisible, setIsVisible] = useState(true)
-  const lastScrollY = useRef(0)
+import React, { useEffect, useState, useRef } from 'react';
+import SearchBar from '../common/SearchBar';
+
+const ImageHero = () => {
+  const [isVisible, setIsVisible] = useState(true);
+  const lastScrollY = useRef(0);
+
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY
-      setIsVisible(currentScrollY < lastScrollY.current || currentScrollY < 100)
-      lastScrollY.current = currentScrollY
-    }
-    window.addEventListener('scroll', handleScroll, {
-      passive: true,
-    })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+      const currentScrollY = window.scrollY;
+      setIsVisible(currentScrollY < lastScrollY.current || currentScrollY < 100);
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <div className="relative h-screen w-full overflow-hidden">
-      {/* Video Background */}
+      {/* Image Background */}
       <div className="absolute inset-0">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
+        <img
+          src="https://i.postimg.cc/59H8dCw9/image.png " // Replace with your image URL
+          alt="Hero background"
           className="w-full h-full object-cover"
-        >
-          <source
-            src="https://static.videezy.com/system/resources/previews/000/041/954/original/MW00090.mp4"
-            type="video/mp4"
-          />
-        </video>
+        />
         <div className="absolute inset-0 bg-black bg-opacity-50"></div>
       </div>
+
       {/* Content */}
       <div
-        className={`relative h-full transition-opacity duration-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
+        className={`relative h-full transition-opacity duration-500 ${
+          isVisible ? 'opacity-100' : 'opacity-0'
+        }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center items-center">
           <div className="text-center mb-12 transform translate-y-0 transition-transform duration-1000">
@@ -50,10 +48,12 @@ const VideoHero = () => {
               Explore the world's most breathtaking destinations
             </p>
           </div>
+
           {/* Animated Search Bar */}
           <div className="w-full max-w-4xl animate-float">
             <SearchBar />
           </div>
+
           {/* Scroll Indicator */}
           <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
             <div className="w-8 h-12 rounded-full border-2 border-white p-1">
@@ -63,6 +63,7 @@ const VideoHero = () => {
         </div>
       </div>
     </div>
-  )
-}
-export default VideoHero
+  );
+};
+
+export default ImageHero;
