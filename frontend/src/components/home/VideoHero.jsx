@@ -21,7 +21,7 @@ const ImageHero = () => {
       {/* Image Background */}
       <div className="absolute inset-0">
         <img
-          src="https://i.postimg.cc/59H8dCw9/image.png " // Replace with your image URL
+          src="https://i.postimg.cc/Dzzs5jF6/backpacker-standing-sunrise-viewpoint-ja-bo-village-mae-hong-son-province-thailand.jpg" // Replace with your image URL
           alt="Hero background"
           className="w-full h-full object-cover"
         />

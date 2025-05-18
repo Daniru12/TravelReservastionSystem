@@ -447,60 +447,131 @@ export default function BookingForm() {
     };
 
     return (
-        <div className="max-w-screen-xl mx-auto p-4">
-            <div className="mt-4 mb-8">
-                <button
-                    onClick={() => window.history.back()}
-                    className="flex items-center text-blue-600 hover:text-blue-800"
-                >
-                    <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                    </svg>
-                    Back
-                </button>
-            </div>
-            <div className="bg-white p-8 rounded-lg shadow-lg max-w-md mx-auto border border-gray-200">
-                <h2 className="text-2xl font-bold text-center text-blue-600 mb-2">Accommodation Booking</h2>
-                <p className="text-center text-gray-500 mb-6">Complete the form to secure your reservation</p>
-
-                {message && (
-                    <div
-                        className={`p-4 mb-6 rounded-md ${message.includes("Error")
-                            ? "bg-red-100 text-red-700 border border-red-200"
-                            : "bg-green-100 text-green-700 border border-green-200"
-                            }`}
+        <div 
+            className="min-h-screen w-full flex items-center justify-center"
+            style={{
+                backgroundImage: "url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80')",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat"
+            }}
+        >
+            <div className="max-w-screen-xl w-full mx-auto p-4">
+                <div className="mt-4 mb-8">
+                    <button
+                        onClick={() => window.history.back()}
+                        className="flex items-center text-white hover:text-blue-200 bg-blue-600 bg-opacity-70 px-4 py-2 rounded-md transition-all duration-200"
                     >
-                        {message}
+                        <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
+                        Back
+                    </button>
+                </div>
+                
+                {/* Landscape layout with two columns */}
+                <div className="flex flex-col md:flex-row gap-8">
+                    {/* Left column - Title and Information */}
+                    <div className="md:w-1/2 bg-gradient-to-br from-blue-900 to-blue-700 bg-opacity-90 p-8 rounded-lg shadow-lg text-white">
+                        <h2 className="text-3xl font-bold mb-6">Experience the Perfect Getaway</h2>
+                        <div className="space-y-6">
+                            <div>
+                                <h3 className="text-xl font-semibold mb-2">Why Book With Us?</h3>
+                                <ul className="space-y-2">
+                                    <li className="flex items-start">
+                                        <svg className="w-5 h-5 mr-2 mt-1 text-blue-300" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                        </svg>
+                                        <span>Best price guarantee for all accommodations</span>
+                                    </li>
+                                    <li className="flex items-start">
+                                        <svg className="w-5 h-5 mr-2 mt-1 text-blue-300" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                        </svg>
+                                        <span>24/7 customer support during your stay</span>
+                                    </li>
+                                    <li className="flex items-start">
+                                        <svg className="w-5 h-5 mr-2 mt-1 text-blue-300" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                        </svg>
+                                        <span>Flexible cancellation options</span>
+                                    </li>
+                                    <li className="flex items-start">
+                                        <svg className="w-5 h-5 mr-2 mt-1 text-blue-300" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                        </svg>
+                                        <span>Exclusive deals and special offers</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h3 className="text-xl font-semibold mb-2">Package Information</h3>
+                                <div className="grid grid-cols-1 gap-4">
+                                    <div className="bg-blue-800 bg-opacity-50 p-4 rounded-md">
+                                        <h4 className="font-medium">Normal Package</h4>
+                                        <p className="text-sm text-blue-200">${packagePrices.normal}/person - Basic accommodations with standard amenities</p>
+                                    </div>
+                                    <div className="bg-blue-800 bg-opacity-50 p-4 rounded-md">
+                                        <h4 className="font-medium">Premium Package</h4>
+                                        <p className="text-sm text-blue-200">${packagePrices.premium}/person - Enhanced experience with additional services</p>
+                                    </div>
+                                    <div className="bg-blue-800 bg-opacity-50 p-4 rounded-md">
+                                        <h4 className="font-medium">VIP Package</h4>
+                                        <p className="text-sm text-blue-200">${packagePrices.vip}/person - Luxury treatment with all-inclusive benefits</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                )}
+                    
+                    {/* Right column - Booking Form */}
+                    <div className="md:w-1/2">
+                        <div className="bg-white p-8 rounded-lg shadow-lg border border-gray-200 backdrop-blur-sm bg-opacity-95">
+                            <h2 className="text-2xl font-bold text-center text-blue-600 mb-2">Accommodation Booking</h2>
+                            <p className="text-center text-gray-500 mb-6">Complete the form to secure your reservation</p>
 
-                <ProgressIndicator />
-                <div className="transition-all duration-300">{renderFormStep()}</div>
+                            {message && (
+                                <div
+                                    className={`p-4 mb-6 rounded-md ${message.includes("Error")
+                                        ? "bg-red-100 text-red-700 border border-red-200"
+                                        : "bg-green-100 text-green-700 border border-green-200"
+                                        }`}
+                                >
+                                    {message}
+                                </div>
+                            )}
 
-                <div className="flex justify-between mt-8">
-                    {currentStep > 1 && (
-                        <button
-                            onClick={handlePrevStep}
-                            className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors duration-200"
-                        >
-                            Back
-                        </button>
-                    )}
-                    {currentStep < 3 ? (
-                        <button
-                            onClick={handleNextStep}
-                            className="ml-auto px-4 py-2 bg-blue-600 rounded-md text-white hover:bg-blue-700 transition-colors duration-200"
-                        >
-                            Next
-                        </button>
-                    ) : (
-                        <button
-                            onClick={handleSubmit}
-                            className="ml-auto px-4 py-2 rounded-md text-white font-medium bg-blue-600 hover:bg-blue-700 transition-colors duration-200"
-                        >
-                            Complete Booking
-                        </button>
-                    )}
+                            <ProgressIndicator />
+                            <div className="transition-all duration-300">{renderFormStep()}</div>
+
+                            <div className="flex justify-between mt-8">
+                                {currentStep > 1 && (
+                                    <button
+                                        onClick={handlePrevStep}
+                                        className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors duration-200"
+                                    >
+                                        Back
+                                    </button>
+                                )}
+                                {currentStep < 3 ? (
+                                    <button
+                                        onClick={handleNextStep}
+                                        className="ml-auto px-4 py-2 bg-blue-600 rounded-md text-white hover:bg-blue-700 transition-colors duration-200"
+                                    >
+                                        Next
+                                    </button>
+                                ) : (
+                                    <button
+                                        onClick={handleSubmit}
+                                        className="ml-auto px-4 py-2 rounded-md text-white font-medium bg-blue-600 hover:bg-blue-700 transition-colors duration-200"
+                                    >
+                                        Complete Booking
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 

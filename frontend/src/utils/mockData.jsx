@@ -241,7 +241,7 @@ export const accommodations = [
     destinationId: "1", // Bali
     name: "Ubud Jungle Villa",
     location: "Ubud, Bali",
-    image: "https://images.unsplash.com/photo-1604538944605-6898b46478ab?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1287&q=80",
+    image: "https://i.postimg.cc/1RFqJHPp/170397963.jpg",
     description: "Luxurious villa nestled in the lush jungles of Ubud with private pool and stunning views.",
     rating: 4.9,
     pricePerNight: 250,
@@ -274,7 +274,7 @@ export const accommodations = [
     destinationId: "2", // Santorini
     name: "Oia Sunset Villas",
     location: "Oia, Santorini",
-    image: "https://images.unsplash.com/photo-1515362778563-6a8d0e44bc0f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    image: "https://i.postimg.cc/qqbjT5ZC/luxury-sun-beach-perfect-bay.jpg",
     description: "Traditional cave villas with private terraces offering the best sunset views in Santorini.",
     rating: 4.9,
     pricePerNight: 450,
@@ -307,7 +307,7 @@ export const accommodations = [
     destinationId: "4", // Machu Picchu
     name: "Sacred Valley Lodge",
     location: "Urubamba, Peru",
-    image: "https://images.unsplash.com/photo-1548706041-a83633f75896?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1287&q=80",
+    image: "https://i.postimg.cc/HLcd5GCB/woman-taking-photo-morning-mist-phu-lang-ka-phayao-thailand.jpg",
     description: "Luxury lodge in the Sacred Valley with mountain views and easy access to Machu Picchu.",
     rating: 4.6,
     pricePerNight: 320,
