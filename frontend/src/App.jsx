@@ -7,6 +7,7 @@ import HomePage from './pages/HomePage'
 import DestinationsPage from './pages/DestinationsPage'
 import DestinationDetailPage from './pages/DestinationDetailPage'
 import AccommodationsPage from './pages/AccommodationsPage'
+import BookingForm from './pages/Accommodationbooking';
 import PackagesPage from './pages/PackagesPage'
 import WishlistPage from './pages/WishlistPage'
 import LoginPage from './pages/LoginPage'
@@ -40,6 +41,8 @@ export function App() {
                 <Route path="/faq" element={<FaqPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignupPage />} />
+                <Route path="/booking" element={<BookingForm />} />
+
               </Routes>
             </main>
             <Footer />

@@ -1,14 +1,28 @@
-import React, { useState } from 'react'
-import { SearchIcon, StarIcon } from 'lucide-react'
-import { accommodations } from '../utils/mockData'
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { SearchIcon, StarIcon } from 'lucide-react';
+import { accommodations } from '../utils/mockData';
+
 const AccommodationsPage = () => {
-  const [searchQuery, setSearchQuery] = useState('')
-  const [priceRange, setPriceRange] = useState('')
+  const [searchQuery, setSearchQuery] = useState('');
+  const [priceRange, setPriceRange] = useState('');
+  const navigate = useNavigate();
+
   const filteredAccommodations = accommodations.filter(
     (accommodation) =>
       accommodation.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-      (priceRange ? accommodation.pricePerNight <= parseInt(priceRange) : true),
-  )
+      (priceRange ? accommodation.pricePerNight <= parseInt(priceRange) : true)
+  );
+
+  // Navigate to booking page with accommodation id in state or query
+  const handleBookNow = (accommodationId) => {
+    // Option 1: Pass accommodation id as state (recommended)
+    navigate('/booking', { state: { accommodationId } });
+
+    // Option 2: Or pass as URL param or query string (alternative)
+    // navigate(`/booking?accommodationId=${accommodationId}`);
+  };
+
   return (
     <div className="bg-gray-50 min-h-screen">
       <div className="bg-blue-700 py-12">
@@ -82,9 +96,7 @@ const AccommodationsPage = () => {
                   </div>
                 </div>
                 <p className="text-gray-500 mb-4">{accommodation.location}</p>
-                <p className="text-gray-600 mb-4">
-                  {accommodation.description}
-                </p>
+                <p className="text-gray-600 mb-4">{accommodation.description}</p>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {accommodation.amenities.map((amenity, index) => (
                     <span
@@ -102,7 +114,10 @@ const AccommodationsPage = () => {
                       ${accommodation.pricePerNight}
                     </p>
                   </div>
-                  <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+                  <button
+                    onClick={() => handleBookNow(accommodation.id)}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+                  >
                     Book Now
                   </button>
                 </div>
@@ -112,6 +127,7 @@ const AccommodationsPage = () => {
         </div>
       </div>
     </div>
-  )
-}
-export default AccommodationsPage
+  );
+};
+
+export default AccommodationsPage;
