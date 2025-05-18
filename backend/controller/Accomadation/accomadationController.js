@@ -1,4 +1,4 @@
-import Booking from "../models/accomadationModel.js"; // adjust path as needed
+import Booking from "../../models/accomadationModel.js"; // adjust path as needed
 
 // Create a new booking
 export const createBooking = async (req, res) => {

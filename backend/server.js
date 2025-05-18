@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import userRoutes from "./routes/userRoutes.js";
+import book from "./routes/accomadationRoutes.js";
 
 
 dotenv.config();
@@ -40,7 +41,7 @@ mongoose
 
 
 app.use("/api/users", userRoutes);
-
+app.use("/api/booking", book);
 
 
 // Add this after your routes but before app.listen
