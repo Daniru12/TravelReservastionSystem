@@ -1,15 +1,18 @@
-// File: SignupPage.jsx
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import toast from 'react-hot-toast';
+import { useAuth } from '../contexts/AuthContext';
 import {
   UserIcon,
   MailIcon,
   LockIcon,
   EyeIcon,
   EyeOffIcon,
+  MapIcon,
+  PlaneIcon,
+  Trees,
+  Mountain,
+  Cloud,
+  Sun,
 } from 'lucide-react';
 
 const SignupPage = () => {
@@ -20,93 +23,146 @@ const SignupPage = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [animationStep, setAnimationStep] = useState(0);
 
+  const { signup } = useAuth();
   const navigate = useNavigate();
 
+  // Animate background elements
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setAnimationStep((prev) => (prev + 1) % 3);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
   const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  if (!name || !email || !password || !confirmPassword) {
-    setError('Please fill in all fields');
-    return;
-  }
-
-  if (password !== confirmPassword) {
-    setError('Passwords do not match');
-    return;
-  }
-
-  if (password.length < 6) {
-    setError('Password must be at least 6 characters');
-    return;
-  }
-
-  setLoading(true);
-  setError('');
-
-  try {
-    const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
-    console.log("Sending registration data:", {
-      full_name: name,
-      email,
-      password,
-    });
-
-    const response = await axios.post(`${backendUrl}/api/users/register`, {
-      full_name: name,
-      email,
-      password,
-    });
-
-    console.log("Registration success:", response.data);
-
-    if (response.data.token) {
-      localStorage.setItem('token', response.data.token);
-      toast.success('Account created successfully!');
-      navigate('/profile');
+    e.preventDefault();
+    if (!name || !email || !password || !confirmPassword) {
+      setError('Please fill in all fields');
+      return;
     }
-  } catch (error) {
-    console.error("Full error response:", error.response?.data);
-    const message =
-      error.response?.data?.message ||
-      error.message ||
-      'Error creating account';
-    setError(message);
-    toast.error(message);
-  } finally {
-    setLoading(false);
-  }
-};
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters');
+      return;
+    }
+    try {
+      setError('');
+      setLoading(true);
+      await signup(email, password, name);
+      navigate('/');
+    } catch (err) {
+      setError('Failed to create an account');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Dynamic animated elements for the landscape
+  const AnimatedPlane = () => (
+    <div
+      className="absolute z-10 transition-all duration-1000 ease-in-out"
+      style={{
+        top: '15%',
+        right: animationStep === 0 ? '10%' : animationStep === 1 ? '40%' : '70%',
+        transform: 'rotate(-15deg)',
+      }}
+    >
+      <PlaneIcon className="w-16 h-16 text-white drop-shadow-lg" />
+    </div>
+  );
+
+  const AnimatedClouds = () => (
+    <>
+      <div
+        className="absolute top-1/4 left-10 z-10 opacity-80 transition-all duration-[8000ms] ease-in-out"
+        style={{ transform: `translateX(${animationStep * 20}px)` }}
+      >
+        <Cloud className="w-24 h-12 text-white" />
+      </div>
+      <div
+        className="absolute top-1/3 right-20 z-10 opacity-90 transition-all duration-[12000ms] ease-in-out"
+        style={{ transform: `translateX(${-animationStep * 15}px)` }}
+      >
+        <Cloud className="w-16 h-10 text-white" />
+      </div>
+      <div
+        className="absolute bottom-2/3 left-1/4 z-10 opacity-70 transition-all duration-[10000ms] ease-in-out"
+        style={{ transform: `translateX(${animationStep * 10}px)` }}
+      >
+        <Cloud className="w-20 h-8 text-white" />
+      </div>
+    </>
+  );
 
   return (
-    <div className="flex flex-col justify-center min-h-screen py-12 bg-gray-50 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-3xl font-bold text-center text-gray-900">
-          Create your account
+    <div className="relative flex flex-col justify-center min-h-screen py-12 overflow-hidden bg-center bg-cover"
+         style={{
+           backgroundImage: "url('https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080&q=80')",
+           backgroundAttachment: "fixed"
+         }}>
+      {/* Dark overlay */}
+      <div className="absolute inset-0 z-0 bg-black bg-opacity-40" />
+      
+      {/* Sun element */}
+      <div className="absolute z-10 top-16 right-16">
+        <Sun className="w-16 h-16 text-yellow-300 animate-pulse" />
+      </div>
+      
+      {/* Animated elements */}
+      <AnimatedPlane />
+      <AnimatedClouds />
+
+      {/* Landscape Elements */}
+      <div className="absolute bottom-0 left-0 right-0 z-10 h-44 bg-gradient-to-t from-emerald-800 to-transparent" />
+      <div className="absolute z-10 transform scale-125 bottom-16 left-10">
+        <Trees className="w-24 h-24 text-emerald-700" />
+      </div>
+      <div className="absolute z-10 transform scale-110 bottom-20 right-16">
+        <Trees className="w-20 h-20 text-emerald-800" />
+      </div>
+      <div className="absolute z-10 transform scale-150 bottom-36 left-1/3">
+        <Mountain className="w-32 h-32 text-emerald-900" />
+      </div>
+      <div className="absolute z-10 transform -translate-x-1/2 bottom-24 left-2/3">
+        <MapIcon className="w-12 h-12 text-amber-500" />
+      </div>
+
+      {/* Logo & Title */}
+      <div className="relative z-20 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="flex items-center justify-center w-20 h-20 mx-auto bg-white rounded-full shadow-lg bg-opacity-90">
+          <PlaneIcon className="w-12 h-12 text-blue-600 transform rotate-45" />
+        </div>
+        <h2 className="mt-6 text-4xl font-extrabold text-center text-white drop-shadow-md">
+          Join TravelEase
         </h2>
-        <p className="mt-2 text-sm text-center text-gray-600">
-          Join TravelEase and start planning your dream vacation
+        <p className="mt-2 text-lg text-center text-white drop-shadow-md">
+          Start planning your dream vacation today
         </p>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
+      {/* Sign Up Form */}
+      <div className="relative z-20 mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="px-4 py-8 bg-white border border-white shadow-xl backdrop-blur-md bg-opacity-90 sm:rounded-xl sm:px-10 border-opacity-30">
           {error && (
-            <div className="p-4 mb-4 border-l-4 border-red-500 bg-red-50">
+            <div className="p-4 mb-4 border-l-4 border-red-500 rounded bg-red-50">
               <p className="text-sm text-red-700">{error}</p>
             </div>
           )}
-
           <form className="space-y-6" onSubmit={handleSubmit}>
-            {/* Full Name */}
+            {/* Name */}
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                 Full Name
               </label>
               <div className="relative mt-1">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <UserIcon className="w-5 h-5 text-gray-400" />
+                  <UserIcon className="w-5 h-5 text-blue-500" />
                 </div>
                 <input
                   id="name"
@@ -116,19 +172,20 @@ const SignupPage = () => {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
-                  className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 transition-all duration-300 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="John Doe"
                 />
               </div>
             </div>
 
-            {/* Email Address */}
+            {/* Email */}
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 Email address
               </label>
               <div className="relative mt-1">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <MailIcon className="w-5 h-5 text-gray-400" />
+                  <MailIcon className="w-5 h-5 text-blue-500" />
                 </div>
                 <input
                   id="email"
@@ -138,7 +195,8 @@ const SignupPage = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 transition-all duration-300 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="you@example.com"
                 />
               </div>
             </div>
@@ -150,7 +208,7 @@ const SignupPage = () => {
               </label>
               <div className="relative mt-1">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <LockIcon className="w-5 h-5 text-gray-400" />
+                  <LockIcon className="w-5 h-5 text-blue-500" />
                 </div>
                 <input
                   id="password"
@@ -159,23 +217,22 @@ const SignupPage = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="block w-full py-2 pl-10 pr-10 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="block w-full py-2 pl-10 pr-10 placeholder-gray-400 transition-all duration-300 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="••••••"
                 />
                 <div className="absolute inset-y-0 right-0 flex items-center pr-3">
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="text-gray-400 hover:text-gray-500 focus:outline-none"
+                    className="text-gray-400 transition-colors duration-300 hover:text-gray-500 focus:outline-none"
                   >
-                    {showPassword ? (
-                      <EyeOffIcon className="w-5 h-5" />
-                    ) : (
-                      <EyeIcon className="w-5 h-5" />
-                    )}
+                    {showPassword ? <EyeOffIcon className="w-5 h-5" /> : <EyeIcon className="w-5 h-5" />}
                   </button>
                 </div>
               </div>
-              <p className="mt-1 text-xs text-gray-500">Password must be at least 6 characters</p>
+              <p className="mt-1 text-xs text-gray-500">
+                Password must be at least 6 characters
+              </p>
             </div>
 
             {/* Confirm Password */}
@@ -185,7 +242,7 @@ const SignupPage = () => {
               </label>
               <div className="relative mt-1">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <LockIcon className="w-5 h-5 text-gray-400" />
+                  <LockIcon className="w-5 h-5 text-blue-500" />
                 </div>
                 <input
                   id="confirmPassword"
@@ -194,7 +251,8 @@ const SignupPage = () => {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
-                  className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="block w-full py-2 pl-10 pr-3 placeholder-gray-400 transition-all duration-300 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="••••••"
                 />
               </div>
             </div>
@@ -206,9 +264,9 @@ const SignupPage = () => {
                 name="terms"
                 type="checkbox"
                 required
-                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                className="w-4 h-4 text-blue-600 transition-colors duration-300 border-gray-300 rounded focus:ring-blue-500"
               />
-              <label htmlFor="terms" className="ml-2 text-sm text-gray-900">
+              <label htmlFor="terms" className="block ml-2 text-sm text-gray-900">
                 I agree to the{' '}
                 <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
                   Terms of Service
@@ -225,14 +283,33 @@ const SignupPage = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+                className="flex justify-center w-full px-4 py-3 text-sm font-medium text-white transition-all duration-300 transform bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 hover:scale-105"
               >
-                {loading ? 'Creating account...' : 'Sign up'}
+                {loading ? (
+                  <span className="flex items-center">
+                    <svg
+                      className="w-4 h-4 mr-2 -ml-1 text-white animate-spin"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Creating account...
+                  </span>
+                ) : (
+                  'Start Your Journey'
+                )}
               </button>
             </div>
           </form>
 
-          {/* Social Login Section (Optional) */}
+          {/* Divider */}
           <div className="mt-6">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
@@ -242,11 +319,13 @@ const SignupPage = () => {
                 <span className="px-2 text-gray-500 bg-white">Or continue with</span>
               </div>
             </div>
+
+            {/* Social Buttons */}
             <div className="grid grid-cols-2 gap-3 mt-6">
               <div>
                 <a
                   href="#"
-                  className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50"
+                  className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 transition-all duration-300 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50"
                 >
                   <span className="sr-only">Sign up with Google</span>
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -257,7 +336,7 @@ const SignupPage = () => {
               <div>
                 <a
                   href="#"
-                  className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50"
+                  className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 transition-all duration-300 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50"
                 >
                   <span className="sr-only">Sign up with Facebook</span>
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -280,6 +359,29 @@ const SignupPage = () => {
                 Sign in
               </Link>
             </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Decorative Elements */}
+      <div className="absolute z-20 hidden transform lg:block bottom-16 left-16 rotate-12">
+        <div className="p-2 bg-white rounded shadow-lg bg-opacity-90">
+          <div className="flex items-center justify-center w-20 h-16 bg-orange-100">
+            <span className="text-xs font-bold text-orange-600">BOARDING PASS</span>
+          </div>
+        </div>
+      </div>
+      <div className="absolute z-20 hidden transform md:block top-24 right-24 -rotate-6">
+        <div className="p-1 bg-white rounded-lg shadow-lg bg-opacity-90">
+          <div className="flex items-center justify-center bg-blue-100 rounded-full w-14 h-14">
+            <span className="text-lg font-bold text-blue-600">✈️</span>
+          </div>
+        </div>
+      </div>
+      <div className="absolute z-20 hidden transform md:block bottom-20 right-36 rotate-3">
+        <div className="p-2 bg-white rounded shadow-lg bg-opacity-90">
+          <div className="flex items-center justify-center w-16 h-12 bg-yellow-100">
+            <span className="text-xs font-bold text-yellow-600">PASSPORT</span>
           </div>
         </div>
       </div>
